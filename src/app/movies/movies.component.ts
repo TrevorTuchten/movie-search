@@ -6,12 +6,15 @@ import {MovieService} from '../movie.service'
 	selector: 'app-movies',
 	templateUrl: './movies.component.html',
 	styleUrls: ['./movies.component.sass'],
-	providers: [MovieService]
+	providers: [MovieService],
 })
 export class MoviesComponent {
 
+	// container variables
 	getMovies: any;
 	movies: any;
+
+	//Dom manipulation variables
 	noShow: string;
 	noResults: boolean;
 	moviesToShow: any;
@@ -23,17 +26,25 @@ export class MoviesComponent {
 	constructor( private _movieService: MovieService) {}
 
 	loadMovies(movie){
+
 		// Get Matching Movies
 		this._movieService.getMovies(movie)
 			.subscribe(
 				response => {
+
+					// Store the GET response
 					this.getMovies = response;
+
+					// perform manipulation on response
 					this.movies = this.getMovies.results;
 					this.noResults = false;
-					/*Display error if not movies match*/
+
+					// Display error if no movies match
 					if (!this.movies.length) {
 						this.noResults = true;
 						this.noShow = 'There were no movies found'
+
+					// load results for Dom
 					} else {
 						this.moviesToShow = this.getMovies.results;
 					}
@@ -43,5 +54,4 @@ export class MoviesComponent {
 					console.log(err);
 				});
 	}
-
 }
